@@ -36,10 +36,18 @@ computeSWPER <- function(dhsdata) {
                                          0.121,0.022,-0.012,-0.016,0.013,
                                          0.001,0.599,0.601,0.619))
     tempdat <- as.data.frame(dhsdata[,intersect(list.swper$variable, names(dhsdata))])
-    tempdat$AGE.DIFF <- dhsdata$v012-dhsdata$v730 # too many husbands with aged 95y?
-    tempdat$EDUCATION.DIFF <- dhsdata$v133-dhsdata$v715
-    tempdat$EDUCATION.DIFF[(dhsdata$v715 %in% c(97,98,99)) |
-                           (dhsdata$v133 %in% c(97,99))] <- NA
+    tempdat$AGE.DIFF <- dhsdata$v012-dhsdata$v730
+    if (sum(!is.na(dhsdata$v715))>0) { # husband's years of education is available
+        tempdat$EDUCATION.DIFF <- dhsdata$v133-dhsdata$v715
+        tempdat$EDUCATION.DIFF[(dhsdata$v715 %in% c(97,98,99)) |
+                               (dhsdata$v133 %in% c(97,99))] <- NA
+    } else { # husband's years of education is not available
+        ed.woman <- paste(dhsdata$v106, dhsdata$v107) # woman highest education level + years at level
+        ed.husband <- paste(dhsdata$v701, ifelse(dhsdata$v702==98,1,dhsdata$v702)) # husband highest education level + years at level
+        years.husband <- dhsdata$v133[match(ed.husband,ed.woman)] # estimate husband total years of education
+        years.husband[is.na(years.husband) & as_factor(dhsdata$v701)=="no education"] <- 0
+        tempdat$EDUCATION.DIFF <- ifelse(as_factor(dhsdata$v106)=="no education",0,dhsdata$v133)-years.husband
+    }
     tempdat <- tempdat[,match(list.swper$variable, colnames(tempdat))] # re-arrange the columns to match list.swper order
     
     for (i in which(grepl("Beating",list.swper$itemname))) {

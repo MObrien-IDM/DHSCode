@@ -6,7 +6,7 @@
 library(haven) # for reading Stata files
 source("dhs-swper.R")
 
-womensdata <- read_dta("~/idm/dhs/data/NGIR7BDT/NGIR7BFL.DTA") # Nigeria's 2018 DHS
+womensdata <- read_dta("NGIR7BFL.DTA") # Nigeria's 2018 DHS
 womensdata <- cbind(womensdata, computeSWPER(womensdata))
 
 table(womensdata$SWPER.EMPOWERMENT.1) # attitude to violence
