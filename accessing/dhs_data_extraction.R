@@ -17,13 +17,13 @@ varlist <- c("v000", #country-survey code
              "v008", #date of interview (CMC)
              "v011", #respondent's age (CMC)
              "v012", #respondent age
-             # "v021", #primary sampling unit
-             # "v040", #Cluster altitude in meters
+             "v021", #primary sampling unit
+             "v040", #Cluster altitude in meters
              "v101", #region
              "v130",
              "v133", #education in years
-             # "vcal_1", #birth/preg/FP calendar
-             # "v019", #length of calendar (MUST bring this in with vcal_1 if using)
+             "vcal_1", #birth/preg/FP calendar
+             "v019", #length of calendar (MUST bring this in with vcal_1 if using)
              #birth date (CMC)
              # "b3_01", "b3_02", "b3_03", "b3_04", "b3_05", "b3_06", "b3_07", "b3_08", "b3_09", "b3_10", "b3_11", "b3_12", "b3_13", "b3_14", "b3_15", "b3_16", "b3_17", "b3_18", "b3_19", "b3_20",
              #child alive 
@@ -40,6 +40,9 @@ varlist <- c("v000", #country-survey code
              #"m5_01", "m5_02", "m5_03", "m5_04", "m5_05", "m5_06", "m5_07", "m5_08", "m5_09", "m5_10", "m5_11", "m5_12", "m5_13", "m5_14", "m5_15", "m5_16", "m5_17", "m5_18", "m5_19", "m5_20",
              # "v206", "v207", #sons/daughters alive
              "v201", #children ever born
+             "v213", #currently pregnant
+             "v218", #living children
+             "v209", #births in past year
              "v212", #age at first birth
              # "v221", #marriage to first birth interval
              "v222", #last birth to interview
@@ -47,6 +50,8 @@ varlist <- c("v000", #country-survey code
              "v155", #literacy
              "v140", #urban-rural
              "v149", #educational attainment
+             "v302", "v302a", #ever use any method
+             "v311", #number of children at first use
              "v312", #contraceptive method at current moment
              "v228", #terminated pregnancy ever
              "v301", #knowledge of any method
@@ -59,9 +64,19 @@ varlist <- c("v000", #country-survey code
              "v531", #"Age at first sex (imputed)"
              "v501", #"Ever been married or in union"
              "v536", #"Recent sexual activity"
-             "v362", "v362A", #Decision-making about use/non-use
+             "v326", #last source for current users (public/private/other)
+             "v359", #last method discontinued in past five years
+             "v360", #reason for discontinuation
+             "v362", #intention to use/timing of intent
+             "v375a", #main reason not using
+             "v376", #main reason not to use
+             "v376a", #would ever use if married
+             "v362a", #Decision-making about use/non-use
+             "v362", "v362a", #Decision-making about use/non-use
              "v362", "v364", #desire to use FP at any point in future
-             "v3A08A", "v3A08Z" #reasons for non-use
+             "v3a08a", "v3a08b", "v3a08c", "v3a08d", "v3a08e", "v3a08f", "v3a08g","v3a08h","v3a08i", "v3a08j",
+             "v3a08k","v3a08l","v3a08m","v3a08n","v3a08o","v3a08p","v3a08q","v3a08r","v3a08s","v3a08t","v3a08u","v3a08v","v3a08w",
+             "v3a08x","v3a08y","v3a08z","v3a08aa","v3a08ab","v3a08ac","v3a08ad" #reasons for non-use
              )
 
 temp = list.files(pattern="*.DTA") #list all files in the working directory with extension
@@ -85,8 +100,9 @@ table(dhs$country_code)
 table(dhs$country_code, dhs$v312)
 table(dhs$country_code, dhs$v101)
 
-table(dhs$v101)
+# table(dhs$v101)
 
-
+##cmc translation
+dhs$int_date <- (1900+(dhs$v008/12))
 
 
